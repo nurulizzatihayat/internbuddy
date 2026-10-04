@@ -1,0 +1,70 @@
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div
+                class="toast bg-dark text-white border border-secondary shadow-sm"
+                role="alert"
+                aria-live="assertive"
+                aria-atomic="true"
+            >
+                <div class="toast-body d-flex align-items-start gap-3 py-3 px-3">
+
+                    <div class="text-white-50 mt-1">
+                        {% if category == 'success' %}
+                            <i class="bi bi-check-circle"></i>
+                        {% elif category == 'danger' %}
+                            <i class="bi bi-exclamation-circle"></i>
+                        {% elif category == 'warning' %}
+                            <i class="bi bi-exclamation-triangle"></i>
+                        {% else %}
+                            <i class="bi bi-info-circle"></i>
+                        {% endif %}
+                    </div>
+
+                    <div class="flex-grow-1">
+                        <div class="small fw-semibold text-white mb-1">
+                            {{ category|capitalize }}
+                        </div>
+
+                        <div class="small text-white-50">
+                            {{ message }}
+                        </div>
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn-close btn-close-white opacity-50"
+                        data-bs-dismiss="toast"
+                        aria-label="Close"
+                    ></button>
+
+                </div>
+            </div>
+        {% endfor %}
+    {% endwith %}
+</div>
+
+<style>
+    .toast {
+        min-width: 280px;
+        max-width: 360px;
+        border-radius: 10px;
+    }
+
+    .toast .btn-close {
+        transition: opacity 0.2s ease;
+    }
+
+    .toast .btn-close:hover {
+        opacity: 0.9 !important;
+    }
+</style>
+
+<script>
+    const toastElements = document.querySelectorAll('.toast');
+
+    toastElements.forEach(function (toastElement) {
+        const toast = new bootstrap.Toast(toastElement);
+        toast.show();
+    });
+</script>

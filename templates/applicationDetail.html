@@ -1,0 +1,183 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intern Buddy - Application</title>
+    <link rel="icon" href="static/icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <div id="card-app">
+
+        <input type="hidden" name="app_id" value="{{ app.id }}">
+
+        <div class="application-card h-100
+            {% if app.status == 'accepted' or app.status == 'offered' %}
+                status-success
+            {% elif app.status == 'rejected' %}
+                status-danger
+            {% elif app.status == 'interview' %}
+                status-warning
+            {% elif app.status == 'applied' %}
+                status-warning
+            {% else %}
+                status-secondary
+            {% endif %}
+        ">
+
+            <!-- STATUS ACCENT -->
+            <div class="status-accent"></div>
+
+            <!-- HEADER -->
+            <form action="/application" method="POST" class="m-0">
+
+                <input type="hidden" name="app_id" value="{{ app.id }}">
+
+                <div class="application-header">
+
+                    <div class="company-info">
+                        <div class="company-name">
+                            <i class="bi bi-building"></i>
+                            {{ app.company }}
+                        </div>
+
+                        <div class="application-role">
+                            {{ app.role }}
+                        </div>
+                    </div>
+
+                    <select name="status" class="status-select" onchange="this.form.submit()">
+                        <option value="listed"
+                            {% if app.status == 'listed' %}selected{% endif %}>
+                            Listed
+                        </option>
+
+                        <option value="applied"
+                            {% if app.status == 'applied' %}selected{% endif %}>
+                            Applied
+                        </option>
+
+                        <option value="interview"
+                            {% if app.status == 'interview' %}selected{% endif %}>
+                            Interview
+                        </option>
+
+                        <option value="offered"
+                            {% if app.status == 'offered' %}selected{% endif %}>
+                            Offered
+                        </option>
+
+                        <option value="rejected"
+                            {% if app.status == 'rejected' %}selected{% endif %}>
+                            Rejected
+                        </option>
+
+                        <option value="accepted"
+                            {% if app.status == 'accepted' %}selected{% endif %}>
+                            Accepted
+                        </option>
+                    </select>
+
+                </div>
+
+            </form>
+
+
+            <!-- BODY -->
+            <form action="/manage/{{ app.id }}" method="POST" class="application-form">
+
+                <div class="application-body">
+
+                    <!-- ROLE -->
+                    <div class="application-field">
+                        <label>
+                            <i class="bi bi-briefcase"></i>
+                            Role
+                        </label>
+
+                        <input type="text" name="role" value="{{ app.role }}">
+                    </div>
+
+
+                    <!-- LOCATION -->
+                    <div class="application-field">
+                        <label>
+                            <i class="bi bi-geo-alt"></i>
+                            Location
+                        </label>
+
+                        <input type="text" name="location" value="{{ app.location }}" >
+                    </div>
+
+
+                    <!-- CATEGORY -->
+                    <div class="application-field">
+                        <label>
+                            <i class="bi bi-tag"></i>
+                            Category
+                        </label>
+
+                        <input type="text" name="category" value="{{ app.category }}" >
+                    </div>
+
+                    <!-- ALLOWANCE -->
+                    <div class="application-field">
+                        <label>
+                            <i class="bi bi-cash-stack"></i>
+                            Allowance
+                        </label>
+
+                        <input type="text" name="allowance" value="{{ app.allowance }}" >
+                    </div>
+
+                    <!-- WEBSITE -->
+                    <div class="application-field">
+                        <label>
+                            <i class="bi bi-link-45deg"></i>
+                            Website
+                        </label>
+
+                        <input type="text" name="website" value="{{ app.website }}" >
+                    </div>
+
+                </div>
+
+
+                <!-- FOOTER -->
+                <div class="application-footer">
+
+                    <small class="last-updated">
+                        <i class="bi bi-clock-history"></i>
+                        {{ app.last_updated }}
+                    </small>
+
+                    <div class="application-actions">
+
+                        <button
+                            type="submit" name="updatebtn" class="card-action update-action" title="Save changes">
+                            <i class="bi bi-check2"></i>
+                            <span>Save</span>
+                        </button>
+
+                        <button type="submit" name="deletebtn" class="card-action delete-action" title="Delete application" >
+                            <i class="bi bi-trash3"></i>
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/chart.js"></script>
+</body>
+</html>

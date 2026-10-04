@@ -1,0 +1,107 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intern Buddy - Application</title>
+    <link rel="icon" href="static/icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    {% include "navbar.html" %}
+
+    <section class="container py-5 my-5">
+        {% include "toast.html" %}
+        <form method="get" class="mb-3">
+            <div class="d-flex flex-column flex-md-row gap-2 mb-4">
+
+                <!-- Search -->
+                <div class="flex-grow-1">
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent text-white-50 border-secondary search-icon">
+                            <i class="bi bi-search"></i>
+                        </span>
+
+                        <input type="text" name="searchbar" class="form-control bg-transparent text-white border-secondary search-input" placeholder="Search company or role" value="{{ search_query }}">
+                    </div>
+                </div>
+
+                <!-- Status Filter -->
+                <select name="statusFilter" class="form-select bg-transparent text-white border-secondary status-filter" >
+                    <option value="" class="bg-dark text-white"
+                            {% if current_status == '' %}selected{% endif %}>
+                        All Status
+                    </option>
+
+                    <option value="listed" class="bg-dark text-white"
+                            {% if current_status == 'listed' %}selected{% endif %}>
+                        Listed
+                    </option>
+
+                    <option value="applied" class="bg-dark text-white"
+                            {% if current_status == 'applied' %}selected{% endif %}>
+                        Applied
+                    </option>
+
+                    <option value="interview" class="bg-dark text-white"
+                            {% if current_status == 'interview' %}selected{% endif %}>
+                        Interview
+                    </option>
+
+                    <option value="offer" class="bg-dark text-white"
+                            {% if current_status == 'offer' %}selected{% endif %}>
+                        Offer
+                    </option>
+
+                    <option value="accepted" class="bg-dark text-white"
+                            {% if current_status == 'accepted' %}selected{% endif %}>
+                        Accepted
+                    </option>
+
+                    <option value="rejected" class="bg-dark text-white"
+                            {% if current_status == 'rejected' %}selected{% endif %}>
+                        Rejected
+                    </option>
+                </select>
+
+                <!-- Search Button -->
+                <button
+                    class="btn btn-light search-btn"
+                    type="submit"
+                    aria-label="Search"
+                >
+                    <i class="bi bi-search"></i>
+                </button>
+
+            </div>
+
+        </form>
+        {% include "addApplication.html" %}
+
+        <div class="row">
+            {% if applications %}
+                {% for app in applications %}
+                    <div class="col-lg-4 col-12 mb-4">
+                        {% include "applicationDetail.html" %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12">
+                    <div class="alert alert-light text-center bg-transparent border-0">
+                        <i class="bi bi-exclamation-circle"></i>
+                        No application is found
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <div class="text-center text-light small">Total Applications:<strong> {{ applications|length }}</strong></div>
+    </section>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/chart.js"></script>
+    
+</body>
+</html>

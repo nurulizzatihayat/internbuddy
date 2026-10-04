@@ -1,0 +1,226 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intern Buddy - Home</title>
+    <link rel="icon" href="static/icon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    {% include "navbar.html" %}
+    <div id="intro" class="min-vh-100 pt-5 d-flex flex-column align-items-center justify-content-center">
+        <div class="container">
+            {% include "toast.html" %}
+            <div class="row g-4 align-items-center">
+                <div class="col-md-5 hero-text">
+                    <div class="container" id="opening">
+                        <h6>Your internship hunt, made easier.</h6>
+                        <h1 class="display-4 fw-bold">Intern Buddy</h1>
+                        <p class="lead">
+                            Keep every internship opportunity in one place — from the moment you find it to the moment you hear back.
+                        </p>
+                        <p class="small">Track applications, monitor deadlines, and keep notes on the companies and roles you're interested in. No more digging through spreadsheets, bookmarks, or scattered notes.</p>
+                        <ul class="list-unstyled">
+                            <li>
+                                <i class="bi bi-check2-circle me-2"></i>
+                                Save opportunities as you find them
+                            </li>
+                            <li>
+                                <i class="bi bi-check2-circle me-2"></i>
+                                Track where each application stands
+                            </li>
+                            <li>
+                                <i class="bi bi-check2-circle me-2"></i>
+                                Keep deadlines and important details within reach
+                            </li>
+                        </ul>
+                        <a href="application" class="btn btn-outline-light btn-sm rounded-pill px-4 w-50 my-3">
+                            <i class="bi bi-mortarboard-fill me-2"></i> Start Tracking
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-md-7 hero-dashboard">
+                    <div class="container">
+                        <div class="row g-3">
+
+                            <div class="col-12">
+                                <div class="card p-3">
+
+                                    <!-- Title -->
+                                    <p class="fw-bold pt-2 mb-3">
+                                        <i class="bi bi-calendar mx-2"></i>
+                                        Recent Applications
+                                    </p>
+
+                                    <!-- Status Summary -->
+                                    <div class="card p-4 mb-3 status-summary">
+                                        <div class="row g-4 text-center">
+
+                                            <div class="col-4 col-md-2">
+                                                <small class="text-muted d-block">Listed</small>
+                                                <h3 class="fw-bold mb-0">
+                                                    {{ status_counts['listed'] }}
+                                                </h3>
+                                            </div>
+
+                                            <div class="col-4 col-md-2">
+                                                <small class="text-muted d-block">Applied</small>
+                                                <h3 class="fw-bold mb-0">
+                                                    {{ status_counts['applied'] }}
+                                                </h3>
+                                            </div>
+
+                                            <div class="col-4 col-md-2">
+                                                <small class="text-muted d-block">Interview</small>
+                                                <h3 class="fw-bold mb-0">
+                                                    {{ status_counts['interview'] }}
+                                                </h3>
+                                            </div>
+
+                                            <div class="col-4 col-md-2">
+                                                <small class="text-muted d-block">Offered</small>
+                                                <h3 class="fw-bold mb-0">
+                                                    {{ status_counts['offered'] }}
+                                                </h3>
+                                            </div>
+
+                                            <div class="col-4 col-md-2">
+                                                <small class="text-muted d-block">Rejected</small>
+                                                <h3 class="fw-bold mb-0">
+                                                    {{ status_counts['rejected'] }}
+                                                </h3>
+                                            </div>
+
+                                            <div class="col-4 col-md-2">
+                                                <small class="text-muted d-block">Accepted</small>
+                                                <h3 class="fw-bold mb-0">
+                                                    {{ status_counts['accepted'] }}
+                                                </h3>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Recent Applications -->
+                                    {% if recent_applications %}
+                                        <ul id="recent-applications" class="list-group recent list">
+                                            {% for app in recent_applications %}
+                                                <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent text-light py-3">
+                                                    <div>
+                                                        <strong>{{ app.company }}</strong>
+
+                                                        <small class="text-muted d-block">
+                                                            {{ app.role }}
+                                                        </small>
+                                                    </div>
+                                                    <div class="text-end">
+                                                        <small class="text-muted d-block">
+                                                            {{ app.last_updated }}
+                                                        </small>
+                                                        <span class="badge mt-1 rounded-pill px-3
+                                                            {% if app.status == 'listed' %}
+                                                                bg-secondary
+                                                            {% elif app.status == 'applied' %}
+                                                                bg-primary
+                                                            {% elif app.status == 'interview' %}
+                                                                bg-warning
+                                                            {% elif app.status == 'offered' %}
+                                                                bg-success
+                                                            {% elif app.status == 'rejected' %}
+                                                                bg-danger
+                                                            {% elif app.status == 'accepted' %}
+                                                                bg-success
+                                                            {% else %}
+                                                                bg-secondary
+                                                            {% endif %}">
+                                                            {{ app.status|capitalize }}
+                                                        </span>
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% else %}
+                                        <div id="recent-applications" class="alert alert-light text-center">
+                                            <i class="bi bi-exclamation-circle"></i>
+                                            No recent applications
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include "about.html" %}
+    {% include "recommendation.html" %}
+
+
+    <footer class="py-5 mt-5 border-top border-secondary">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Brand -->
+                <div class="col-md-6">
+                    <h4 class="fw-bold display-4">Intern Buddy</h4>
+                    <p class="text-muted small mb-0">
+                        Your internship hunt, organised.
+                    </p>
+                </div>
+
+                <!-- Links -->
+                <div class="col-md-3">
+                    <h6 class="fw-bold pb-1">Explore</h6>
+                    <a href="#about" class="d-block text-muted text-decoration-none small mb-2">
+                        About
+                    </a>
+                    <a href="#recommendation" class="d-block text-muted text-decoration-none small mb-2">
+                        Discover
+                    </a>
+                    <a href="/application" class="d-block text-muted text-decoration-none small">
+                        Applications
+                    </a>
+                </div>
+
+                <!-- Account -->
+                <div class="col-md-3">
+                    <h6 class="fw-bold pb-1">Account</h6>
+                    <a href="/login" class="d-block text-muted text-decoration-none small mb-2">
+                        Log in
+                    </a>
+                    <a href="/register" class="d-block text-muted text-decoration-none small">
+                        Sign up
+                    </a>
+                    <h6 class="fw-bold pt-3">Contact</h6>
+                    <a href="/reportbug" class="d-block text-muted text-decoration-none small">
+                        Report
+                    </a>
+                </div>
+
+            </div>
+
+            <hr class="border-secondary my-4">
+
+            <div class="d-flex justify-content-between align-items-center">
+                <small class="text-muted">
+                    © 2026 Intern Buddy
+                </small>
+
+                <small class="text-muted">
+                    Built for students, by students.
+                </small>
+            </div>
+
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/chart.js"></script>
+    
+</body>
+</html>

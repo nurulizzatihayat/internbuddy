@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <div id="recommendation" class="showcase-section min-vh-100 d-flex flex-column align-items-center justify-content-center">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Left side -->
+                <div class="col-md-6 px-5 my-5 showcase-text">
+                    <span class="text-uppercase small fw-semibold text-muted">
+                        Explore opportunities
+                    </span>
+
+                    <h1 class="display-5 fw-bold text-start mt-2">
+                        See where other students are applying.
+                    </h1>
+
+                    <p class="text-start text-muted">
+                        Get a glimpse of the internships students are discovering and
+                        keeping track of through <mark>Intern Buddy</mark>.
+                    </p>
+
+                    <p class="small text-muted">
+                        From software development to design, business, and more —
+                        discover opportunities that could be worth exploring.
+                    </p>
+
+                    <a href="application" class="btn btn-outline-light rounded-pill px-5">
+                        <i class="bi bi-people-fill"></i>
+                        <span class="small">Discover opportunities together</span>
+                    </a>
+                </div>
+
+                <!-- Right side -->
+                <div class="col-md-6 my-5 pb-5 showcase-carousel-container">
+                    <div id="example" class="carousel slide showcase-carousel" data-bs-ride="carousel">
+                        <!-- Application Cards -->
+                        <div class="carousel-inner">
+                            {% if recommendation %}
+                                {% for app in recommendation %}
+                                    <div class="carousel-item {% if loop.first %}active{% endif %}" data-bs-interval="5000">
+                                        <div class="card mx-auto w-75 showcase-card">
+                                            <div class="card-body p-4">
+                                                <!-- Company & Role -->
+                                                <div class="d-flex flex-column justify-content-between align-items-start">
+                                                    <div>
+                                                        <small class="text-muted text-uppercase">
+                                                            Company
+                                                        </small>
+                                                        <h4 class="fw-bold my-1">
+                                                            {{ app.company }}
+                                                        </h4>
+                                                        <p class="my-0 text-light small">
+                                                            {{ app.role }}
+                                                        </p>
+                                                    </div>
+
+                                                    <div class="pt-3">
+                                                        <small class="d-block">
+                                                            <i class="bi bi-geo-alt me-1 text-muted"></i>
+                                                            {{ app.location }}
+                                                        </small>
+                                                        <small class="d-block">
+                                                            <i class="bi bi-tag me-1 text-muted"></i>
+                                                            {{ app.category }}
+                                                        </small>
+                                                        <small class="d-block">
+                                                            <i class="bi bi-cash-stack me-1 text-muted"></i>
+                                                            {{ app.allowance }}
+                                                        </small>
+                                                        <small class="d-block">
+                                                            <i class="bi bi-link-45deg me-1 text-muted"></i>
+                                                            {{ app.website }}
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="card mx-auto w-75 showcase-card">
+                                    <div class="card-body p-4">
+                                        <div class="d-flex flex-column justify-content-between align-items-start">
+                                            <div> No application made by other student </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            </div>
+
+                        <!-- Previous -->
+                        <button class="carousel-control-prev" type="button" data-bs-target="#example" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <!-- Next -->
+                        <button class="carousel-control-next" type="button" data-bs-target="#example" data-bs-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const showcaseSection = document.querySelector(".showcase-section");
+
+        const showcaseObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+
+                if (entry.isIntersecting) {
+                    showcaseSection.classList.add("show");
+
+                    showcaseObserver.unobserve(showcaseSection);
+                }
+
+            });
+        }, {
+            threshold: 0.2
+        });
+
+        showcaseObserver.observe(showcaseSection);
+    </script>
+</body>
+</html>
